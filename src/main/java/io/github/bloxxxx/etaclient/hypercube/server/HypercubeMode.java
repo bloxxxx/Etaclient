@@ -37,6 +37,10 @@ public enum HypercubeMode {
         return this == HypercubeMode.BUILD;
     }
 
+    public boolean isEditing() {
+        return isDev() || isBuild();
+    }
+
     public boolean isPlay() {
         return this == HypercubeMode.PLAY;
     }

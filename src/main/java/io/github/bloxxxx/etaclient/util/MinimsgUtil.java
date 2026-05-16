@@ -9,8 +9,8 @@ import net.minecraft.text.Text;
 public final class MinimsgUtil {
     private MinimsgUtil() {}
 
-    private static MiniMessage mm = MiniMessage.miniMessage();
-    private static MinecraftClientAudiences audiences = MinecraftClientAudiencesImpl.INSTANCE;
+    private static final MiniMessage mm = MiniMessage.miniMessage();
+    private static final MinecraftClientAudiences audiences = MinecraftClientAudiencesImpl.INSTANCE;
 
     public static Component deserialize(String input) {
         return mm.deserialize(input);
