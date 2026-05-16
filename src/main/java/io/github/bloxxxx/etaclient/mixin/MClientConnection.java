@@ -1,8 +1,10 @@
 package io.github.bloxxxx.etaclient.mixin;
 
 import io.github.bloxxxx.etaclient.feature.Features;
+import io.github.bloxxxx.etaclient.feature.trait.DisconnectListenerFeature;
 import io.netty.channel.ChannelFutureListener;
 import net.minecraft.network.ClientConnection;
+import net.minecraft.network.DisconnectionInfo;
 import net.minecraft.network.listener.PacketListener;
 import net.minecraft.network.packet.Packet;
 import org.jspecify.annotations.Nullable;
@@ -24,5 +26,10 @@ public class MClientConnection {
     @Inject(method = "send(Lnet/minecraft/network/packet/Packet;Lio/netty/channel/ChannelFutureListener;Z)V", at = @At("HEAD"), cancellable = true)
     public void send(Packet<?> packet, @Nullable ChannelFutureListener listener, boolean flush, CallbackInfo ci) {
         if (Features.callPacketHandlers(packet)) ci.cancel();
+    }
+
+    @Inject(method = "disconnect(Lnet/minecraft/network/DisconnectionInfo;)V", at = @At("HEAD"))
+    public void disconnect(DisconnectionInfo disconnectionInfo, CallbackInfo ci) {
+        Features.callFeatures(DisconnectListenerFeature.class, f -> f.onDisconnect(disconnectionInfo));
     }
 }
