@@ -1,5 +1,6 @@
 package io.github.bloxxxx.etaclient;
 
+import io.github.bloxxxx.etaclient.feature.Features;
 import net.fabricmc.api.ClientModInitializer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.Identifier;
@@ -18,6 +19,6 @@ public class Etaclient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
-
+        Features.init();
     }
 }
