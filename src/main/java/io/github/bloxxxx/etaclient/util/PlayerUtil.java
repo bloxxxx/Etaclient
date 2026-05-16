@@ -28,4 +28,7 @@ public final class PlayerUtil {
     public static void sendMessage(String message) {
         sendMessage(Text.literal(message));
     }
+    public static void sendMinimsg(String message) {
+        sendMessage(MinimsgUtil.deserializeText(message));
+    }
 }
