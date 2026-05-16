@@ -2,6 +2,7 @@ package io.github.bloxxxx.etaclient.util;
 
 import io.github.bloxxxx.etaclient.Etaclient;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.Vec3d;
@@ -76,5 +77,11 @@ public final class PlayerUtil {
 
     public static void setVelocity(Vec3d vel) {
         getOp().ifPresent((player) -> player.setVelocity(vel));
+    }
+
+    public static ItemStack getHandStack() {
+        ClientPlayerEntity player = get();
+        if (player == null) return ItemStack.EMPTY;
+        return player.getMainHandStack();
     }
 }

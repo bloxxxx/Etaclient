@@ -9,10 +9,13 @@ import io.github.bloxxxx.etaclient.feature.trait.InitFeature;
 import io.github.bloxxxx.etaclient.hypercube.server.HypercubeNode;
 import io.github.bloxxxx.etaclient.hypercube.server.HypercubePlayer;
 import io.github.bloxxxx.etaclient.util.LogUtil;
+import io.github.bloxxxx.etaclient.util.PBVUtil;
 import io.github.bloxxxx.etaclient.util.PlayerUtil;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.util.math.Vec3d;
+
+import java.util.Objects;
 
 public class TestFeature implements InitFeature, CommandFeature, ForceFeature {
 
@@ -71,7 +74,16 @@ public class TestFeature implements InitFeature, CommandFeature, ForceFeature {
                 PlayerUtil.sendMinimsg("<red>Teleport failed");
             }
             return 0;
-        })));
+        });
+
+        registerSimple(dispatcher, "pbvtest", (context) -> {
+            PlayerUtil.sendMessage(Objects.requireNonNullElse(
+                    PBVUtil.get(PlayerUtil.getHandStack()),
+                    "NULL"
+            ).toString());
+            return 0;
+        });
+
     }
 
     private Vec3d teleportTest = Vec3d.ZERO;
