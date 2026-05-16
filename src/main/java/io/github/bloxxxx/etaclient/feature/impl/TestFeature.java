@@ -6,6 +6,7 @@ import io.github.bloxxxx.etaclient.feature.builtin.TeleportHandler;
 import io.github.bloxxxx.etaclient.feature.trait.CommandFeature;
 import io.github.bloxxxx.etaclient.feature.trait.ForceFeature;
 import io.github.bloxxxx.etaclient.feature.trait.InitFeature;
+import io.github.bloxxxx.etaclient.hypercube.plot.varitem.VarItem;
 import io.github.bloxxxx.etaclient.hypercube.server.HypercubeNode;
 import io.github.bloxxxx.etaclient.hypercube.server.HypercubePlayer;
 import io.github.bloxxxx.etaclient.util.LogUtil;
@@ -79,6 +80,14 @@ public class TestFeature implements InitFeature, CommandFeature, ForceFeature {
         registerSimple(dispatcher, "pbvtest", (context) -> {
             PlayerUtil.sendMessage(Objects.requireNonNullElse(
                     PBVUtil.get(PlayerUtil.getHandStack()),
+                    "NULL"
+            ).toString());
+            return 0;
+        });
+
+        registerSimple(dispatcher, "varitemtest", (context) -> {
+            PlayerUtil.sendMessage(Objects.requireNonNullElse(
+                    VarItem.parse(PlayerUtil.getHandStack()),
                     "NULL"
             ).toString());
             return 0;
