@@ -10,7 +10,6 @@ import io.github.bloxxxx.etaclient.hypercube.server.HypercubeNode;
 import io.github.bloxxxx.etaclient.hypercube.server.HypercubePlayer;
 import io.github.bloxxxx.etaclient.util.LogUtil;
 import io.github.bloxxxx.etaclient.util.PlayerUtil;
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.util.math.Vec3d;
@@ -24,7 +23,8 @@ public class TestFeature implements InitFeature, CommandFeature, ForceFeature {
 
     @Override
     public void registerCommands(CommandDispatcher<FabricClientCommandSource> dispatcher, CommandRegistryAccess registryAccess) {
-        dispatcher.register(ClientCommandManager.literal("getlocation").executes((context -> {
+
+        registerSimple(dispatcher, "getlocation", (context) -> {
             String node = "NULL";
             if (PlayerTracker.NODE != null) node = PlayerTracker.NODE.getId();
             PlayerUtil.sendMinimsg(
@@ -38,9 +38,9 @@ public class TestFeature implements InitFeature, CommandFeature, ForceFeature {
                             "]"
             );
             return 0;
-        })));
+        });
 
-        dispatcher.register(ClientCommandManager.literal("getnodes").executes((context -> {
+        registerSimple(dispatcher, "getnodes", (context) -> {
             PlayerUtil.sendMinimsg("<#a0a0ff>Tracked nodes:");
             for (HypercubeNode node : PlayerTracker.NODES) {
                 StringBuilder playerList = new StringBuilder();
@@ -56,15 +56,15 @@ public class TestFeature implements InitFeature, CommandFeature, ForceFeature {
             }
 
             return 0;
-        })));
+        });
 
-        dispatcher.register(ClientCommandManager.literal("setteleporttest").executes((context -> {
+        registerSimple(dispatcher, "setteleporttest", (context) -> {
             teleportTest = PlayerUtil.getPosition();
             PlayerUtil.sendMinimsg("<green>Teleport location set: <gray><italic><" + teleportTest.getX() + ", " + teleportTest.getY() + ", " + teleportTest.getZ() + ">");
             return 0;
-        })));
+        });
 
-        dispatcher.register(ClientCommandManager.literal("teleporttest").executes((context -> {
+        registerSimple(dispatcher, "teleporttest", (context) -> {
             if (TeleportHandler.tp(teleportTest)) {
                 PlayerUtil.sendMinimsg("<green>Teleported successfully");
             } else {
