@@ -6,6 +6,7 @@
   "mixins": [
   ],
   "client": [
+    "MClientConnection"
   ],
   "injectors": {
     "defaultRequire": 1
