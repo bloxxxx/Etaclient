@@ -18,15 +18,22 @@ repositories {
     // See https://docs.gradle.org/current/userguide/declaring_repositories.html
     // for more information about repositories.
     mavenCentral()
+
+    maven {
+        url = uri("https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1")
+    }
 }
 
 dependencies {
+    modRuntimeOnly("me.djtheredstoner:DevAuth-fabric:1.2.2")
+
     // To change the versions see the gradle.properties file
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
 
     modImplementation "net.kyori:adventure-platform-fabric:${project.adventure_platform_version}"
 }
