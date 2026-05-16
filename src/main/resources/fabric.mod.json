@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "id": "etaclient",
+  "version": "${version}",
+  "name": "Etaclient",
+  "description": "Easing development on mcdiamondfire.net",
+  "authors": ["bloxxxx"],
+  "contact": {
+    "homepage": "https://bloxxxx.github.io",
+    "sources": "https://WIP"
+  },
+  "license": "All-Rights-Reserved",
+  "icon": "assets/etaclient/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "io.github.bloxxxx.etaclient.Etaclient"
+    ]
+  },
+  "mixins": [
+    "etaclient.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric-api": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
