@@ -41,8 +41,8 @@ public final class PlayerUtil {
     }
 
     public static void sendCommand(String command) {
-        getOp().ifPresent((player) -> {
-            player.networkHandler.sendChatCommand(command);
+        NetworkUtil.getOp().ifPresent((handler) -> {
+            handler.sendChatCommand(command);
         });
     }
 
@@ -66,13 +66,12 @@ public final class PlayerUtil {
         });
     }
     public static void teleportServer(Vec3d pos) {
-        getOp().ifPresent((player) -> {
-            player.networkHandler.sendPacket(new PlayerMoveC2SPacket.PositionAndOnGround(
+        NetworkUtil.send(new PlayerMoveC2SPacket.PositionAndOnGround(
                     pos,
                     false,
                     false
-            ));
-        });
+                )
+        );
     }
 
     public static void setVelocity(Vec3d vel) {
