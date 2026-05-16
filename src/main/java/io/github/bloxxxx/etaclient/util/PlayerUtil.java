@@ -2,7 +2,9 @@ package io.github.bloxxxx.etaclient.util;
 
 import io.github.bloxxxx.etaclient.Etaclient;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.text.Text;
+import net.minecraft.util.math.Vec3d;
 
 import java.util.Optional;
 
@@ -30,5 +32,50 @@ public final class PlayerUtil {
     }
     public static void sendMinimsg(String message) {
         sendMessage(MinimsgUtil.deserializeText(message));
+    }
+
+    public static Vec3d getPosition() {
+        ClientPlayerEntity player = get();
+        if (player == null) return Vec3d.ZERO;
+        return player.getEntityPos();
+    }
+
+    public static void sendCommand(String command) {
+        getOp().ifPresent((player) -> {
+            player.networkHandler.sendChatCommand(command);
+        });
+    }
+
+    public static void teleport(Vec3d pos) {
+        getOp().ifPresent((player) -> {
+            player.setPosition(pos);
+        });
+    }
+    public static void teleportInstant(Vec3d pos) {
+        getOp().ifPresent((player) -> {
+            double x = pos.x;
+            double y = pos.y;
+            double z = pos.z;
+            player.setPosition(x, y, z);
+            player.lastX = x;
+            player.lastY = y;
+            player.lastZ = z;
+            player.lastRenderX = x;
+            player.lastRenderY = y;
+            player.lastRenderZ = z;
+        });
+    }
+    public static void teleportServer(Vec3d pos) {
+        getOp().ifPresent((player) -> {
+            player.networkHandler.sendPacket(new PlayerMoveC2SPacket.PositionAndOnGround(
+                    pos,
+                    false,
+                    false
+            ));
+        });
+    }
+
+    public static void setVelocity(Vec3d vel) {
+        getOp().ifPresent((player) -> player.setVelocity(vel));
     }
 }

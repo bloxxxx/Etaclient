@@ -2,6 +2,7 @@ package io.github.bloxxxx.etaclient.feature.impl;
 
 import com.mojang.brigadier.CommandDispatcher;
 import io.github.bloxxxx.etaclient.feature.builtin.PlayerTracker;
+import io.github.bloxxxx.etaclient.feature.builtin.TeleportHandler;
 import io.github.bloxxxx.etaclient.feature.trait.CommandFeature;
 import io.github.bloxxxx.etaclient.feature.trait.ForceFeature;
 import io.github.bloxxxx.etaclient.feature.trait.InitFeature;
@@ -12,6 +13,7 @@ import io.github.bloxxxx.etaclient.util.PlayerUtil;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.command.CommandRegistryAccess;
+import net.minecraft.util.math.Vec3d;
 
 public class TestFeature implements InitFeature, CommandFeature, ForceFeature {
 
@@ -55,5 +57,22 @@ public class TestFeature implements InitFeature, CommandFeature, ForceFeature {
 
             return 0;
         })));
+
+        dispatcher.register(ClientCommandManager.literal("setteleporttest").executes((context -> {
+            teleportTest = PlayerUtil.getPosition();
+            PlayerUtil.sendMinimsg("<green>Teleport location set: <gray><italic><" + teleportTest.getX() + ", " + teleportTest.getY() + ", " + teleportTest.getZ() + ">");
+            return 0;
+        })));
+
+        dispatcher.register(ClientCommandManager.literal("teleporttest").executes((context -> {
+            if (TeleportHandler.tp(teleportTest)) {
+                PlayerUtil.sendMinimsg("<green>Teleported successfully");
+            } else {
+                PlayerUtil.sendMinimsg("<red>Teleport failed");
+            }
+            return 0;
+        })));
     }
+
+    private Vec3d teleportTest = Vec3d.ZERO;
 }

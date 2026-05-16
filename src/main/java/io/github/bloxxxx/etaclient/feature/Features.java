@@ -1,10 +1,12 @@
 package io.github.bloxxxx.etaclient.feature;
 
 import io.github.bloxxxx.etaclient.feature.builtin.PlayerTracker;
+import io.github.bloxxxx.etaclient.feature.builtin.TeleportHandler;
 import io.github.bloxxxx.etaclient.feature.impl.TestFeature;
 import io.github.bloxxxx.etaclient.feature.trait.CommandFeature;
 import io.github.bloxxxx.etaclient.feature.trait.Feature;
 import io.github.bloxxxx.etaclient.feature.trait.InitFeature;
+import io.github.bloxxxx.etaclient.feature.trait.TickedFeature;
 import io.github.bloxxxx.etaclient.feature.trait.packetHandler.HandlePacket;
 import io.github.bloxxxx.etaclient.feature.trait.packetHandler.HandlePacketAnnotationException;
 import io.github.bloxxxx.etaclient.feature.trait.packetHandler.HandlePacketRuntimeException;
@@ -26,6 +28,9 @@ public class Features {
 
     public static void initFeatures() {
         feat(
+                // Handler
+                new TeleportHandler(),
+
                 // Built-in
                 new PlayerTracker(),
 
@@ -73,6 +78,7 @@ public class Features {
     private static void callFeatureInit() {
         callFeatures(InitFeature.class, InitFeature::init);
         callFeatures(CommandFeature.class, CommandFeature::initCommands);
+        callFeatures(TickedFeature.class, TickedFeature::initTicked);
     }
 
     private static void feat(Feature... features) {
