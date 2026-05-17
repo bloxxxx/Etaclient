@@ -6,6 +6,6 @@ public interface TickedFeature extends Feature {
     void tick();
 
     default void initTicked() {
-        ClientTickEvents.END_CLIENT_TICK.register((ignored) -> tick());
+        ClientTickEvents.END_CLIENT_TICK.register((ignored) -> {if (enabled()) tick();});
     }
 }

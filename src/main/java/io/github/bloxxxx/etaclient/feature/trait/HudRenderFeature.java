@@ -10,6 +10,6 @@ public interface HudRenderFeature extends Feature {
     String getHudElementId();
 
     default void initRenderHud() {
-        HudElementRegistry.addLast(Etaclient.getIdentifier(getHudElementId()), this::renderHud);
+        HudElementRegistry.addLast(Etaclient.getIdentifier(getHudElementId()), (c, r) -> {if (enabled()) {renderHud(c, r);}});
     }
 }

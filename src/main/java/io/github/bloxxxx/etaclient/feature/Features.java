@@ -73,10 +73,11 @@ public class Features {
     }
 
     private static void callFeatureInit() {
-        callFeatures(InitFeature.class, InitFeature::init);
-        callFeatures(CommandFeature.class, CommandFeature::initCommands);
-        callFeatures(TickedFeature.class, TickedFeature::initTicked);
-        callFeatures(HudRenderFeature.class, HudRenderFeature::initRenderHud);
+        // X = Disabled while running
+        callFeaturesAlwaysOn(InitFeature.class, InitFeature::init);
+        callFeaturesAlwaysOn(CommandFeature.class, CommandFeature::initCommands);
+        callFeaturesAlwaysOn(TickedFeature.class, TickedFeature::initTicked);               // X
+        callFeaturesAlwaysOn(HudRenderFeature.class, HudRenderFeature::initRenderHud);      // X
     }
 
     private static void feat(Feature... features) {
@@ -142,13 +143,19 @@ public class Features {
         action.accept(casted);
     }
 
-    public static <T extends Feature> void callFeatures(Class<T> featureClass, Consumer<T> action) {
+    public static <T extends Feature> void callFeatures(Class<T> featureClass, Consumer<T> action, boolean alwaysEnabled) {
         for (Feature feature : features.values()) {
-            if (!feature.enabled()) continue;
+            if (!feature.enabled() && !alwaysEnabled) continue;
             if (!featureClass.isInstance(feature)) continue;
             T casted = featureClass.cast(feature);
             action.accept(casted);
         }
+    }
+    public static <T extends Feature> void callFeatures(Class<T> featureClass, Consumer<T> action) {
+        callFeatures(featureClass, action, false);
+    }
+    public static <T extends Feature> void callFeaturesAlwaysOn(Class<T> featureClass, Consumer<T> action) {
+        callFeatures(featureClass, action, true);
     }
 
     public static boolean callPacketHandlers(Packet<?> packet) {
