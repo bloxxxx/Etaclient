@@ -5,18 +5,21 @@ import io.github.bloxxxx.etaclient.feature.builtin.PlayerTracker;
 import io.github.bloxxxx.etaclient.feature.builtin.TeleportHandler;
 import io.github.bloxxxx.etaclient.feature.trait.CommandFeature;
 import io.github.bloxxxx.etaclient.feature.trait.ForceFeature;
+import io.github.bloxxxx.etaclient.feature.trait.HudRenderFeature;
 import io.github.bloxxxx.etaclient.feature.trait.InitFeature;
 import io.github.bloxxxx.etaclient.hypercube.plot.varitem.VarItem;
 import io.github.bloxxxx.etaclient.hypercube.server.HypercubeNode;
 import io.github.bloxxxx.etaclient.hypercube.server.HypercubePlayer;
 import io.github.bloxxxx.etaclient.util.*;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
+import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.util.math.Vec3d;
 
 import java.util.Objects;
 
-public class TestFeature implements InitFeature, CommandFeature, ForceFeature {
+public class TestFeature implements InitFeature, CommandFeature, HudRenderFeature, ForceFeature {
 
     @Override
     public void init() {
@@ -105,4 +108,35 @@ public class TestFeature implements InitFeature, CommandFeature, ForceFeature {
     }
 
     private Vec3d teleportTest = Vec3d.ZERO;
+
+    @Override
+    public void renderHud(DrawContext context, RenderTickCounter renderTickCounter) {
+
+        String node = "NONE";
+        if (PlayerTracker.NODE != null) node = PlayerTracker.NODE.getId();
+        String[] messages = {
+                "<#a0a0ff>Current Location:",
+                "<dark_gray>- <gray>MODE: <white><bold>" + PlayerTracker.MODE.name(),
+                "<dark_gray>- <gray>LOC: <white><bold>" + PlayerTracker.MODE.location.name(),
+                "<dark_gray>- <gray>NODE: <white><bold>" + node
+        };
+
+        int y = 20;
+        for (String message: messages) {
+            context.drawText(
+                    McUtil.textRenderer(),
+                    MinimsgUtil.deserializeText(message),
+                    20,
+                    y,
+                    -1,
+                    true
+            );
+            y += 15;
+        }
+    }
+
+    @Override
+    public String getHudElementId() {
+        return "testfeature";
+    }
 }

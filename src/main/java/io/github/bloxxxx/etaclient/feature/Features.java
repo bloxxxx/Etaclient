@@ -76,6 +76,7 @@ public class Features {
         callFeatures(InitFeature.class, InitFeature::init);
         callFeatures(CommandFeature.class, CommandFeature::initCommands);
         callFeatures(TickedFeature.class, TickedFeature::initTicked);
+        callFeatures(HudRenderFeature.class, HudRenderFeature::initRenderHud);
     }
 
     private static void feat(Feature... features) {
