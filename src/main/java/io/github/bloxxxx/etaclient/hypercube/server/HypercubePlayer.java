@@ -8,6 +8,7 @@ public record HypercubePlayer(GameProfile profile) {
     public String name() {
         return profile.name();
     }
+
     public UUID uuid() {
         return profile.id();
     }

@@ -10,7 +10,7 @@ public final class NetworkUtil {
     private NetworkUtil() {}
 
     public static ClientPlayNetworkHandler get() {
-        return Etaclient.MC.getNetworkHandler();
+        return McUtil.MC.getNetworkHandler();
     }
 
     public static Optional<ClientPlayNetworkHandler> getOp() {

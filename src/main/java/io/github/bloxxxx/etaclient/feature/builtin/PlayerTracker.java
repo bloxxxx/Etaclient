@@ -7,6 +7,7 @@ import io.github.bloxxxx.etaclient.feature.trait.packetHandler.HandlePacket;
 import io.github.bloxxxx.etaclient.hypercube.server.HypercubeMode;
 import io.github.bloxxxx.etaclient.hypercube.server.HypercubeNode;
 import io.github.bloxxxx.etaclient.hypercube.server.HypercubePlayer;
+import io.github.bloxxxx.etaclient.util.McUtil;
 import io.github.bloxxxx.etaclient.util.MinimsgUtil;
 import io.github.bloxxxx.etaclient.util.PlayerUtil;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -73,10 +74,8 @@ public class PlayerTracker implements DisconnectListenerFeature, ForceFeature {
             MODE = HypercubeMode.DEV;
             return false;
         }
-        Matcher transferMatcher = TRANSFER_PATTERN.matcher(message);
-        if (transferMatcher.find()) {
+        if (TRANSFER_PATTERN.matcher(message).find()) {
             MODE = HypercubeMode.TRANSFER;
-            changeNode(transferMatcher.group(1));
             return false;
         }
         return false;
@@ -87,7 +86,6 @@ public class PlayerTracker implements DisconnectListenerFeature, ForceFeature {
         Matcher matcher = SCOREBOARD_PATTERN.matcher(packet.scoreHolderName());
         if (matcher.find()) {
             changeNode(matcher.group(1));
-            updateNodePlayers();
         }
         return false;
     }
@@ -97,24 +95,28 @@ public class PlayerTracker implements DisconnectListenerFeature, ForceFeature {
             NODE = new HypercubeNode(name);
             NODES.removeIf((node) -> node.getId().equals(NODE.getId()));
             NODES.add(NODE);
+
+            updateNodePlayers();
         }
     }
 
     private static void updateNodePlayers() {
-        ClientPlayerEntity player = PlayerUtil.get();
-        if (player == null) return;
-        NODE.clearPlayers();
-        for (PlayerListEntry entry : player.networkHandler.getPlayerList()) {
-            GameProfile profile = entry.getProfile();
-            if (profile.id().equals(player.getUuid())) continue;
-            if (profile.name().contains("§")) continue; // No clue why this happens tbh
+        McUtil.execute(() -> {
+            ClientPlayerEntity player = PlayerUtil.get();
+            if (player == null) return;
+            NODE.clearPlayers();
+            for (PlayerListEntry entry : player.networkHandler.getPlayerList()) {
+                GameProfile profile = entry.getProfile();
+                if (profile.id().equals(player.getUuid())) continue;
+                if (profile.name().contains("§")) continue; // No clue why this happens tbh
 
-            // Remove from other nodes
-            for (HypercubeNode node : NODES) {
-                node.removePlayer(profile.id());
+                // Remove from other nodes
+                for (HypercubeNode node : NODES) {
+                    node.removePlayer(profile.id());
+                }
+
+                NODE.addPlayer(new HypercubePlayer(profile));
             }
-
-            NODE.addPlayer(new HypercubePlayer(profile));
-        }
+        });
     }
 }

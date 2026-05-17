@@ -1,9 +1,9 @@
 package io.github.bloxxxx.etaclient.feature.builtin;
 
-import io.github.bloxxxx.etaclient.Etaclient;
 import io.github.bloxxxx.etaclient.feature.trait.ForceFeature;
 import io.github.bloxxxx.etaclient.feature.trait.TickedFeature;
 import io.github.bloxxxx.etaclient.feature.trait.packetHandler.HandlePacket;
+import io.github.bloxxxx.etaclient.util.McUtil;
 import io.github.bloxxxx.etaclient.util.PlayerUtil;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.world.ClientWorld;
@@ -95,7 +95,7 @@ public class TeleportHandler implements TickedFeature, ForceFeature {
     private static boolean isAir(Vec3d pos) {
         ClientPlayerEntity player = PlayerUtil.get();
         if (player == null) return false;
-        ClientWorld world = Etaclient.MC.world;
+        ClientWorld world = McUtil.world();
         if (world == null) return false;
 
         Box box = player.getBoundingBox()

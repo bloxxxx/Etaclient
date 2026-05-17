@@ -13,7 +13,7 @@ public final class PlayerUtil {
     private PlayerUtil() {}
 
     public static ClientPlayerEntity get() {
-        return Etaclient.MC.player;
+        return McUtil.MC.player;
     }
 
     public static Optional<ClientPlayerEntity> getOp() {

@@ -1,9 +1,8 @@
-package io.github.bloxxxx.etaclient.feature.trait.command;
+package io.github.bloxxxx.etaclient.feature.trait;
 
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import io.github.bloxxxx.etaclient.feature.trait.Feature;
 import io.github.bloxxxx.etaclient.util.PlayerUtil;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
