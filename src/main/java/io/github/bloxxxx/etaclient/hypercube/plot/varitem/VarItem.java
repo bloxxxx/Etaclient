@@ -7,7 +7,7 @@ import io.github.bloxxxx.etaclient.util.PBVUtil;
 import net.minecraft.item.ItemStack;
 
 public interface VarItem {
-    public static VarItem parse(JsonObject root) {
+    static VarItem parse(JsonObject root) {
         if (root == null) return null;
 
         JsonElement idElement = root.get("id");
@@ -27,7 +27,7 @@ public interface VarItem {
 
         return type.construct(data);
     }
-    public static VarItem parse(ItemStack stack) {
+    static VarItem parse(ItemStack stack) {
         return parse(PBVUtil.getVarItem(stack));
     }
 }

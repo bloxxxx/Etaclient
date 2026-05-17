@@ -2,9 +2,12 @@ package io.github.bloxxxx.etaclient.hypercube.plot.varitem.impl;
 
 import com.google.gson.JsonObject;
 import io.github.bloxxxx.etaclient.hypercube.plot.varitem.VarItem;
+import io.github.bloxxxx.etaclient.util.JsonUtil;
 
 public record StringVarItem(String value) implements VarItem {
-    public StringVarItem(JsonObject data) {
-        this(data.get("name").getAsJsonPrimitive().getAsString());
+    public static StringVarItem fromJson(JsonObject data) {
+        return new StringVarItem(
+                JsonUtil.getAsStringDef(data, "name", "")
+        );
     }
 }

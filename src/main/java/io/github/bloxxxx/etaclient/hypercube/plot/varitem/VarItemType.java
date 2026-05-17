@@ -5,18 +5,19 @@ import io.github.bloxxxx.etaclient.hypercube.plot.varitem.impl.*;
 
 public enum VarItemType {
 
-    NUMBER("num", NumberVarItem::new),
-    STRING("txt", StringVarItem::new),
-    TEXT("comp", TextVarItem::new),
-    LOCATION("loc", LocationVarItem::new),
-    VECTOR("vec", VectorVarItem::new),
-    SOUND("snd", SoundVarItem::new),
-    // TODO: PARTICLE
-    POTION("pot", PotionVarItem::new),
-    VARIABLE("var", VariableVarItem::new),
-    GAME_VALUE("g_val", GameValueVarItem::new);
-    // TODO: PARAMETER
-
+    NUMBER("num", NumberVarItem::fromJson),
+    STRING("txt", StringVarItem::fromJson),
+    TEXT("comp", TextVarItem::fromJson),
+    LOCATION("loc", LocationVarItem::fromJson),
+    VECTOR("vec", VectorVarItem::fromJson),
+    SOUND("snd", SoundVarItem::fromJson),
+    PARTICLE("part", ParticleVarItem::fromJson),
+    POTION("pot", PotionVarItem::fromJson),
+    VARIABLE("var", VariableVarItem::fromJson),
+    GAME_VALUE("g_val", GameValueVarItem::fromJson),
+    PARAMETER("pn_el", ParameterVarItem::fromJson),
+    ITEM("item", ItemVarItem::fromJson),
+    TAG("bl_tag", TagVarItem::fromJson);
 
 
 
