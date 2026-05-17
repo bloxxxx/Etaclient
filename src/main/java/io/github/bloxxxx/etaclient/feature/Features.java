@@ -3,7 +3,7 @@ package io.github.bloxxxx.etaclient.feature;
 import io.github.bloxxxx.etaclient.feature.builtin.PlayerTracker;
 import io.github.bloxxxx.etaclient.feature.builtin.TeleportHandler;
 import io.github.bloxxxx.etaclient.feature.impl.TestFeature;
-import io.github.bloxxxx.etaclient.feature.trait.CommandFeature;
+import io.github.bloxxxx.etaclient.feature.trait.command.CommandFeature;
 import io.github.bloxxxx.etaclient.feature.trait.Feature;
 import io.github.bloxxxx.etaclient.feature.trait.InitFeature;
 import io.github.bloxxxx.etaclient.feature.trait.TickedFeature;
