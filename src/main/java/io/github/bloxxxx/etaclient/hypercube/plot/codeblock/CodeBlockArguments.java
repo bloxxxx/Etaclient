@@ -17,6 +17,7 @@ public class CodeBlockArguments {
     }
 
     public static CodeBlockArguments fromJson(JsonObject root) {
+        if (root == null) return null;
         JsonArray array = JsonUtil.getAsJsonArrayDefEmpty(root, "items");
 
         CodeBlockArguments res = new CodeBlockArguments();
@@ -36,5 +37,12 @@ public class CodeBlockArguments {
 
     public static CodeBlockArguments fromArgsJson(JsonObject root) {
         return fromJson(JsonUtil.getAsJsonObjectDefEmpty(root, "args"));
+    }
+
+    @Override
+    public String toString() {
+        return "CodeBlockArguments{" +
+                "slots=" + slots +
+                '}';
     }
 }
