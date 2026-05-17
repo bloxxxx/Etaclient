@@ -21,6 +21,8 @@ public class CodeTemplate {
     }
 
     public static @Nullable CodeTemplate fromJson(JsonObject root) {
+        if (root == null) return null;
+
         CodeTemplate res = new CodeTemplate(Data.fromJson(root));
         String code = JsonUtil.getAsString(root, "code");
         if (code == null) return null;

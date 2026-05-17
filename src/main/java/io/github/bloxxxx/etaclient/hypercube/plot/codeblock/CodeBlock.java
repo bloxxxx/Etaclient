@@ -6,6 +6,8 @@ import org.jetbrains.annotations.Nullable;
 
 public interface CodeBlock {
     static @Nullable CodeBlock parse(JsonObject root) {
+        if (root == null) return null;
+
         String id = JsonUtil.getAsString(root, "id");
         if (id == null) return null;
 
