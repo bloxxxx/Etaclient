@@ -1,15 +1,17 @@
 package io.github.bloxxxx.etaclient.util;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
 public final class JsonUtil {
     private JsonUtil() {}
 
-    public static JsonObject getAsJsonObject(JsonObject object, String key) {
+    public static @Nullable JsonObject getAsJsonObject(JsonObject object, String key) {
         JsonElement element = object.get(key);
         if (element == null) return null;
         if (!element.isJsonObject()) return null;
@@ -25,7 +27,23 @@ public final class JsonUtil {
         return getAsJsonObjectDef(object, key, new JsonObject());
     }
 
-    public static JsonPrimitive getAsPrimitive(JsonObject object, String key) {
+    public static @Nullable JsonArray getAsJsonArray(JsonObject object, String key) {
+        JsonElement element = object.get(key);
+        if (element == null) return null;
+        if (!element.isJsonArray()) return null;
+        return element.getAsJsonArray();
+    }
+    public static Optional<JsonArray> getAsJsonArrayOp(JsonObject object, String key) {
+        return Optional.ofNullable(getAsJsonArray(object, key));
+    }
+    public static JsonArray getAsJsonArrayDef(JsonObject object, String key, JsonArray def) {
+        return getAsJsonArrayOp(object, key).orElse(def);
+    }
+    public static JsonArray getAsJsonArrayDefEmpty(JsonObject object, String key) {
+        return getAsJsonArrayDef(object, key, new JsonArray());
+    }
+
+    public static @Nullable JsonPrimitive getAsPrimitive(JsonObject object, String key) {
         JsonElement element = object.get(key);
         if (element == null) return null;
         if (!element.isJsonPrimitive()) return null;
@@ -35,7 +53,7 @@ public final class JsonUtil {
         return Optional.ofNullable(getAsPrimitive(object, key));
     }
 
-    public static String getAsString(JsonObject object, String key) {
+    public static @Nullable String getAsString(JsonObject object, String key) {
         JsonPrimitive primitive = getAsPrimitive(object, key);
         if (primitive == null) return null;
         if (!primitive.isString()) return null;
@@ -48,7 +66,7 @@ public final class JsonUtil {
         return getAsStringOp(object, key).orElse(def);
     }
 
-    public static Double getAsDouble(JsonObject object, String key) {
+    public static @Nullable Double getAsDouble(JsonObject object, String key) {
         JsonPrimitive primitive = getAsPrimitive(object, key);
         if (primitive == null) return null;
         if (!primitive.isNumber()) return null;
@@ -61,7 +79,7 @@ public final class JsonUtil {
         return getAsDoubleOp(object, key).orElse(def);
     }
 
-    public static Integer getAsInt(JsonObject object, String key) {
+    public static @Nullable Integer getAsInt(JsonObject object, String key) {
         JsonPrimitive primitive = getAsPrimitive(object, key);
         if (primitive == null) return null;
         if (!primitive.isNumber()) return null;
@@ -74,7 +92,7 @@ public final class JsonUtil {
         return getAsIntOp(object, key).orElse(def);
     }
 
-    public static Boolean getAsBoolean(JsonObject object, String key) {
+    public static @Nullable Boolean getAsBoolean(JsonObject object, String key) {
         JsonPrimitive primitive = getAsPrimitive(object, key);
         if (primitive == null) return null;
         if (!primitive.isBoolean()) return null;

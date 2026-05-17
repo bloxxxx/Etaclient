@@ -19,6 +19,6 @@ public enum ActionTarget {
         for (ActionTarget target : values()) {
             if (target.id.equals(id)) return target;
         }
-        return null;
+        return DEFAULT;
     }
 }
