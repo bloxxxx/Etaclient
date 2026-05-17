@@ -9,6 +9,9 @@ import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallba
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.command.CommandRegistryAccess;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public interface CommandFeature extends Feature {
     void registerCommands(CommandDispatcher<FabricClientCommandSource> dispatcher, CommandRegistryAccess registryAccess);
 
@@ -20,23 +23,35 @@ public interface CommandFeature extends Feature {
         dispatcher.register(ClientCommandManager.literal(name).executes((executes)));
     }
 
-    default void registerSimple(CommandDispatcher<FabricClientCommandSource> dispatcher, String name, SimpleSubCommand... subCommands) {
+    default void registerSimple(CommandDispatcher<FabricClientCommandSource> dispatcher, String name, AbstractSimpleSubCommand... subCommands) {
         LiteralArgumentBuilder<FabricClientCommandSource> builder = ClientCommandManager.literal(name);
-        for (SimpleSubCommand subCommand : subCommands) {
-            builder.then(ClientCommandManager.literal(subCommand.name).executes(subCommand.executes));
+        for (AbstractSimpleSubCommand subCommand : subCommands) {
+            subCommand.addToBuilder(builder);
         }
         builder.executes(context -> {
-            StringBuilder sb = new StringBuilder();
-            for (SimpleSubCommand subCommand : subCommands) {
-                if (!sb.isEmpty()) sb.append("<reset><dark_gray>, ");
-                sb.append("<gray><italic>").append(subCommand.name);
-            }
-            PlayerUtil.sendMinimsg("<#ff0000>No Subcommand specified! <dark_gray>( " + sb + "<reset> <dark_gray>)");
+            PlayerUtil.sendMinimsg("<#ff0000>No Subcommand specified!");
             return 0;
         });
         dispatcher.register(builder);
     }
 
-    record SimpleSubCommand(String name, Command<FabricClientCommandSource> executes) {
+    interface AbstractSimpleSubCommand {
+        void addToBuilder(LiteralArgumentBuilder<FabricClientCommandSource> builder);
+    }
+    record SimpleSubCommand(String name, Command<FabricClientCommandSource> executes) implements AbstractSimpleSubCommand {
+        @Override
+        public void addToBuilder(LiteralArgumentBuilder<FabricClientCommandSource> builder) {
+            builder.then(ClientCommandManager.literal(name).executes(executes));
+        }
+    }
+    record SimpleNestedSubCommand(String name, AbstractSimpleSubCommand... subCommands) implements AbstractSimpleSubCommand {
+        @Override
+        public void addToBuilder(LiteralArgumentBuilder<FabricClientCommandSource> builder) {
+            LiteralArgumentBuilder<FabricClientCommandSource> nestedBuilder = ClientCommandManager.literal(name);
+            for (AbstractSimpleSubCommand subCommand : subCommands) {
+                subCommand.addToBuilder(nestedBuilder);
+            }
+            builder.then(nestedBuilder);
+        }
     }
 }

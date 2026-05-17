@@ -32,16 +32,6 @@ public class TestFeature implements InitFeature, CommandFeature, HudRenderFeatur
 
         registerSimple(dispatcher, "etatest",
 
-                new SimpleSubCommand("enable", context -> {
-                    debug = true;
-                    return 0;
-                }),
-
-                new SimpleSubCommand("disable", context -> {
-                   debug = false;
-                   return 0;
-                }),
-
                 new SimpleSubCommand("getlocation", context -> {
                     String node = "NULL";
                     if (PlayerTracker.NODE != null) node = PlayerTracker.NODE.getId();
@@ -118,17 +108,30 @@ public class TestFeature implements InitFeature, CommandFeature, HudRenderFeatur
                 new SimpleSubCommand("playerdata", context -> {
                     PlayerUtil.sendMinimsg("<green>" + PlayerTracker.PLAYER_DATA.toString());
                     return 0;
-                })
+                }),
+
+
+                new SimpleNestedSubCommand("toggleHud",
+                        new SimpleSubCommand("enable", context -> {
+                            hud = true;
+                            return 0;
+                        }),
+
+                        new SimpleSubCommand("disable", context -> {
+                            hud = false;
+                            return 0;
+                        })
+                )
 
         );
     }
 
-    private boolean debug = false;
+    private boolean hud = false;
     private Vec3d teleportTest = Vec3d.ZERO;
 
     @Override
     public void renderHud(DrawContext context, RenderTickCounter renderTickCounter) {
-        if (!debug) return;
+        if (!hud) return;
 
         String[] messages = getRenderString();
 
