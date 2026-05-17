@@ -126,7 +126,7 @@ public class Features {
                         throw new HandlePacketRuntimeException(throwable);
                     }
                 },
-                (Class<? extends Packet<?>>) paramClass,
+                paramClass,
                 alwaysOn
         ));
 
@@ -154,7 +154,7 @@ public class Features {
     }
 
     public static boolean callPacketHandlers(Packet<?> packet) {
-        Class<? extends Packet> packetClass = packet.getClass();
+        Class<?> packetClass = packet.getClass();
 
         boolean cancel = false;
         for (PacketHandler packetHandler : packetHandlers) {

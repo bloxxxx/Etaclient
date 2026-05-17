@@ -6,10 +6,10 @@ import net.minecraft.network.packet.Packet;
 public class PacketHandler {
     private final Feature feature;
     private final PacketHandlerRunnable runnable;
-    private final Class<? extends Packet<?>> paramClass;
+    private final Class<?> paramClass;
     private final boolean alwaysOn;
 
-    public PacketHandler(Feature feature, PacketHandlerRunnable runnable, Class<? extends Packet<?>> paramClass, boolean alwaysOn) {
+    public PacketHandler(Feature feature, PacketHandlerRunnable runnable, Class<?> paramClass, boolean alwaysOn) {
         this.feature = feature;
         this.runnable = runnable;
         this.paramClass = paramClass;
@@ -25,7 +25,7 @@ public class PacketHandler {
         return feature.enabled();
     }
 
-    public Class<? extends Packet<?>> getParamClass() {
+    public Class<?> getParamClass() {
         return paramClass;
     }
 }
