@@ -7,7 +7,6 @@ import com.mojang.serialization.DataResult;
 import com.mojang.serialization.JsonOps;
 import io.github.bloxxxx.etaclient.hypercube.plot.varitem.VarItem;
 import io.github.bloxxxx.etaclient.util.JsonUtil;
-import io.github.bloxxxx.etaclient.util.PlayerUtil;
 import net.minecraft.component.ComponentChanges;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

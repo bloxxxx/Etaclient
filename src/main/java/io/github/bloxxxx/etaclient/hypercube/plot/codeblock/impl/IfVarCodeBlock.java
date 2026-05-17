@@ -1,7 +1,6 @@
 package io.github.bloxxxx.etaclient.hypercube.plot.codeblock.impl;
 
 import com.google.gson.JsonObject;
-import io.github.bloxxxx.etaclient.hypercube.plot.ActionTarget;
 import io.github.bloxxxx.etaclient.hypercube.plot.codeblock.CodeBlock;
 import io.github.bloxxxx.etaclient.hypercube.plot.codeblock.CodeBlockArguments;
 import io.github.bloxxxx.etaclient.hypercube.plot.codeblock.CodeBlockAttribute;

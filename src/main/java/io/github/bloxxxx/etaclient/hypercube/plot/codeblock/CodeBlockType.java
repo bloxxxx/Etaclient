@@ -2,7 +2,6 @@ package io.github.bloxxxx.etaclient.hypercube.plot.codeblock;
 
 import com.google.gson.JsonObject;
 import io.github.bloxxxx.etaclient.hypercube.plot.codeblock.impl.*;
-import io.github.bloxxxx.etaclient.hypercube.plot.varitem.VarItemConstructingException;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
@@ -79,7 +78,7 @@ public enum CodeBlockType {
         try {
             return constructor.construct(data);
         } catch (NullPointerException | IllegalStateException | UnsupportedOperationException e) {
-            throw new VarItemConstructingException(e);
+            throw new CodeBlockConstructingException(e);
         }
     }
 
