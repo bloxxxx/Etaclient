@@ -17,7 +17,8 @@ public enum VarItemType {
     GAME_VALUE("g_val", GameValueVarItem::fromJson),
     PARAMETER("pn_el", ParameterVarItem::fromJson),
     ITEM("item", ItemVarItem::fromJson),
-    TAG("bl_tag", TagVarItem::fromJson);
+    TAG("bl_tag", TagVarItem::fromJson),
+    HINT("hint", HintVarItem::fromJson);
 
 
 
