@@ -7,7 +7,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
-//TODO: Finish
 public enum CodeBlockType {
 
     BRACKET("bracket", null, BracketCodeBlock::fromJson),
