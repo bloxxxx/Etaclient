@@ -5,9 +5,10 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import io.github.bloxxxx.etaclient.util.PBVUtil;
 import net.minecraft.item.ItemStack;
-
+import org.jetbrains.annotations.Nullable;
+//TODO: Remake using JsonUtil
 public interface VarItem {
-    static VarItem parse(JsonObject root) {
+    static @Nullable VarItem parse(JsonObject root) {
         if (root == null) return null;
 
         JsonElement idElement = root.get("id");

@@ -93,6 +93,14 @@ public class TestFeature implements InitFeature, CommandFeature, ForceFeature {
             return 0;
         });
 
+        registerSimple(dispatcher, "templateparsetest", (context) -> {
+            PlayerUtil.sendMessage(Objects.requireNonNullElse(
+                    PBVUtil.getCodeTemplate(PlayerUtil.getHandStack()),
+                    "NULL"
+            ).toString());
+            return 0;
+        });
+
     }
 
     private Vec3d teleportTest = Vec3d.ZERO;
