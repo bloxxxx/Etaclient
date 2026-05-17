@@ -1,6 +1,5 @@
 package io.github.bloxxxx.etaclient.util;
 
-import io.github.bloxxxx.etaclient.Etaclient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.packet.Packet;
 

@@ -1,6 +1,5 @@
 package io.github.bloxxxx.etaclient.util;
 
-import io.github.bloxxxx.etaclient.Etaclient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
@@ -21,9 +20,7 @@ public final class PlayerUtil {
     }
 
     public static void sendMessage(Text message, boolean overlay) {
-        getOp().ifPresent((player) -> {
-            player.sendMessage(message, overlay);
-        });
+        getOp().ifPresent((player) -> player.sendMessage(message, overlay));
     }
     public static void sendMessage(Text message) {
         sendMessage(message, false);
@@ -42,15 +39,11 @@ public final class PlayerUtil {
     }
 
     public static void sendCommand(String command) {
-        NetworkUtil.getOp().ifPresent((handler) -> {
-            handler.sendChatCommand(command);
-        });
+        NetworkUtil.getOp().ifPresent((handler) -> handler.sendChatCommand(command));
     }
 
     public static void teleport(Vec3d pos) {
-        getOp().ifPresent((player) -> {
-            player.setPosition(pos);
-        });
+        getOp().ifPresent((player) -> player.setPosition(pos));
     }
     public static void teleportInstant(Vec3d pos) {
         getOp().ifPresent((player) -> {

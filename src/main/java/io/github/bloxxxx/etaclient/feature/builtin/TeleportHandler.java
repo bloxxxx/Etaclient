@@ -21,14 +21,15 @@ public class TeleportHandler implements TickedFeature, ForceFeature {
     private static int awaitingSounds = 0;
     private static int awaitingSoundsTimer = 0;
 
-    private static int MAX_TP_LENGTH = 15;
-    private static double MAX_DIFF = 0.1;
-    private static int SOUND_AWAIT_TIMER = 10;
+    private static final int MAX_TP_LENGTH = 15;
+    private static final double MAX_DIFF = 0.1;
+    private static final int SOUND_AWAIT_TIMER = 10;
 
     public static boolean tp(Vec3d goal) {
         ClientPlayerEntity player = PlayerUtil.get();
         if (player == null) return false;
         GameMode gameMode = player.getGameMode();
+        if (gameMode == null) return false;
 
         Vec3d start = PlayerUtil.getPosition();
         Vec3d difference = goal.subtract(start);
@@ -53,12 +54,12 @@ public class TeleportHandler implements TickedFeature, ForceFeature {
                     foundGoal = true;
                 }
 
-                if (!isAir(pos)) {
+                if (isBlock(pos)) {
                     if (gameMode.isSurvivalLike()) {
                         break;
                     }
                     if (gameMode != GameMode.SPECTATOR) continue;
-                };
+                }
                 foundSolution = true;
 
                 lastPosition = pos;
@@ -69,7 +70,7 @@ public class TeleportHandler implements TickedFeature, ForceFeature {
             if (foundGoal) break;
         }
 
-        if (!foundSolution || tpPositions.size() > MAX_TP_LENGTH || (!isAir(goal) && gameMode != GameMode.SPECTATOR)) {
+        if (!foundSolution || tpPositions.size() > MAX_TP_LENGTH || (isBlock(goal) && gameMode != GameMode.SPECTATOR)) {
             if (PlayerTracker.MODE.isEditing()) {
                 PlayerUtil.sendCommand("plot teleport " + goal.getX() + " " + goal.getY() + " " + goal.getZ());
                 awaitingSounds++;
@@ -92,16 +93,16 @@ public class TeleportHandler implements TickedFeature, ForceFeature {
         return tp(goal.toCenterPos());
     }
 
-    private static boolean isAir(Vec3d pos) {
+    private static boolean isBlock(Vec3d pos) {
         ClientPlayerEntity player = PlayerUtil.get();
-        if (player == null) return false;
+        if (player == null) return true;
         ClientWorld world = McUtil.world();
-        if (world == null) return false;
+        if (world == null) return true;
 
         Box box = player.getBoundingBox()
                 .offset(pos.subtract(PlayerUtil.getPosition()));
 
-        return world.isSpaceEmpty(player, box);
+        return !world.isSpaceEmpty(player, box);
     }
 
     @HandlePacket
