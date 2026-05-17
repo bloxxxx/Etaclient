@@ -4,6 +4,7 @@ import com.mojang.authlib.GameProfile;
 import io.github.bloxxxx.etaclient.feature.trait.DisconnectListenerFeature;
 import io.github.bloxxxx.etaclient.feature.trait.ForceFeature;
 import io.github.bloxxxx.etaclient.feature.trait.packetHandler.HandlePacket;
+import io.github.bloxxxx.etaclient.hypercube.server.HypercubeClientPlayerData;
 import io.github.bloxxxx.etaclient.hypercube.server.HypercubeMode;
 import io.github.bloxxxx.etaclient.hypercube.server.HypercubeNode;
 import io.github.bloxxxx.etaclient.hypercube.server.HypercubePlayer;
@@ -26,6 +27,7 @@ public class PlayerTracker implements DisconnectListenerFeature, ForceFeature {
     public static HypercubeMode MODE = HypercubeMode.NONE;
     public static HypercubeNode NODE = null;
     public static Set<HypercubeNode> NODES = new HashSet<>();
+    public static HypercubeClientPlayerData PLAYER_DATA = new HypercubeClientPlayerData();
 
     private static final Pattern SPAWN_PATTERN = Pattern.compile(
             ".*<!italic><!underlined><!strikethrough><!bold><!obfuscated><#FFD42A>⧈ ([0-9]+) Tokens {2}</#FFD42A></!obfuscated></!bold></!strikethrough></!underlined></!italic><!italic><!underlined><!strikethrough><!bold><!obfuscated><#FFD4AA>ᛥ ([0-9]+) Tickets {2}</#FFD4AA></!obfuscated></!bold></!strikethrough></!underlined></!italic><!italic><!underlined><!strikethrough><!bold><!obfuscated><#AAD4FF>⚡ ([0-9]+) Sparks"
@@ -50,12 +52,18 @@ public class PlayerTracker implements DisconnectListenerFeature, ForceFeature {
     public void onDisconnect(DisconnectionInfo info) {
         MODE = HypercubeMode.NONE;
         NODE = null;
+        NODES = new HashSet<>();
     }
 
     @HandlePacket
     public static boolean handleActionBar(OverlayMessageS2CPacket packet) {
         Matcher matcher = SPAWN_PATTERN.matcher(MinimsgUtil.serializeText(packet.text()));
-        if (matcher.find()) MODE = HypercubeMode.SPAWN;
+        if (matcher.find()) {
+            MODE = HypercubeMode.SPAWN;
+            PLAYER_DATA.tokens = Integer.parseInt(matcher.group(1));
+            PLAYER_DATA.tickets = Integer.parseInt(matcher.group(2));
+            PLAYER_DATA.sparks = Integer.parseInt(matcher.group(3));
+        }
         return false;
     }
 

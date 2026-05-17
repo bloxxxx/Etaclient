@@ -16,6 +16,7 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.util.math.Vec3d;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
@@ -30,6 +31,16 @@ public class TestFeature implements InitFeature, CommandFeature, HudRenderFeatur
     public void registerCommands(CommandDispatcher<FabricClientCommandSource> dispatcher, CommandRegistryAccess registryAccess) {
 
         registerSimple(dispatcher, "etatest",
+
+                new SimpleSubCommand("enable", context -> {
+                    debug = true;
+                    return 0;
+                }),
+
+                new SimpleSubCommand("disable", context -> {
+                   debug = false;
+                   return 0;
+                }),
 
                 new SimpleSubCommand("getlocation", context -> {
                     String node = "NULL";
@@ -102,24 +113,24 @@ public class TestFeature implements InitFeature, CommandFeature, HudRenderFeatur
                             "<red>Not a Template"
                     ).toString().replaceAll("§.", ""));
                     return 0;
+                }),
+
+                new SimpleSubCommand("playerdata", context -> {
+                    PlayerUtil.sendMinimsg("<green>" + PlayerTracker.PLAYER_DATA.toString());
+                    return 0;
                 })
 
         );
     }
 
+    private boolean debug = false;
     private Vec3d teleportTest = Vec3d.ZERO;
 
     @Override
     public void renderHud(DrawContext context, RenderTickCounter renderTickCounter) {
+        if (!debug) return;
 
-        String node = "NONE";
-        if (PlayerTracker.NODE != null) node = PlayerTracker.NODE.getId();
-        String[] messages = {
-                "<#a0a0ff>Current Location:",
-                "<dark_gray>- <gray>MODE: <white><bold>" + PlayerTracker.MODE.name(),
-                "<dark_gray>- <gray>LOC: <white><bold>" + PlayerTracker.MODE.location.name(),
-                "<dark_gray>- <gray>NODE: <white><bold>" + node
-        };
+        String[] messages = getRenderString();
 
         int y = 20;
         for (String message: messages) {
@@ -133,6 +144,18 @@ public class TestFeature implements InitFeature, CommandFeature, HudRenderFeatur
             );
             y += 15;
         }
+    }
+
+    private static String @NotNull [] getRenderString() {
+        String node = "NONE";
+        if (PlayerTracker.NODE != null) node = PlayerTracker.NODE.getId();
+        return new String[]{
+                "<#a0a0ff>Current Location:",
+                "<dark_gray>- <gray>MODE: <white><bold>" + PlayerTracker.MODE.name(),
+                "<dark_gray>- <gray>LOC: <white><bold>" + PlayerTracker.MODE.location.name(),
+                "<dark_gray>- <gray>NODE: <white><bold>" + node,
+                "<dark_gray>- <gray>NODES: <white><bold>" + PlayerTracker.NODES.size()
+        };
     }
 
     @Override
