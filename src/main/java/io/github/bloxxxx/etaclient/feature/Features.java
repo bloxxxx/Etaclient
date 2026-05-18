@@ -2,6 +2,7 @@ package io.github.bloxxxx.etaclient.feature;
 
 import io.github.bloxxxx.etaclient.feature.builtin.PlayerTracker;
 import io.github.bloxxxx.etaclient.feature.builtin.TeleportHandler;
+import io.github.bloxxxx.etaclient.feature.impl.LineVarCommandFeature;
 import io.github.bloxxxx.etaclient.feature.impl.TestFeature;
 import io.github.bloxxxx.etaclient.feature.trait.*;
 import io.github.bloxxxx.etaclient.feature.trait.packetHandler.HandlePacket;
@@ -32,7 +33,8 @@ public class Features {
                 new PlayerTracker(),
 
                 // Normal
-                new TestFeature()
+                new TestFeature(),
+                new LineVarCommandFeature()
         );
     }
 
