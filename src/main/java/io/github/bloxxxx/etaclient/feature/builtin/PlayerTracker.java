@@ -70,6 +70,7 @@ public class PlayerTracker implements DisconnectListenerFeature, ForceFeature {
     @HandlePacket
     public static boolean handleGameMessage(GameMessageS2CPacket packet) {
         String message = MinimsgUtil.serializeText(packet.content());
+        if (message == null) return false;
         if (PLAY_PATTERN.matcher(message).find()) {
             MODE = HypercubeMode.PLAY;
             return false;
@@ -82,8 +83,10 @@ public class PlayerTracker implements DisconnectListenerFeature, ForceFeature {
             MODE = HypercubeMode.DEV;
             return false;
         }
-        if (TRANSFER_PATTERN.matcher(message).find()) {
+        Matcher transferMatcher = TRANSFER_PATTERN.matcher(message);
+        if (transferMatcher.find()) {
             MODE = HypercubeMode.TRANSFER;
+            changeNode(transferMatcher.group(1));
             return false;
         }
         return false;
@@ -94,6 +97,7 @@ public class PlayerTracker implements DisconnectListenerFeature, ForceFeature {
         Matcher matcher = SCOREBOARD_PATTERN.matcher(packet.scoreHolderName());
         if (matcher.find()) {
             changeNode(matcher.group(1));
+            updateNodePlayers();
         }
         return false;
     }
@@ -103,8 +107,6 @@ public class PlayerTracker implements DisconnectListenerFeature, ForceFeature {
             NODE = new HypercubeNode(name);
             NODES.removeIf((node) -> node.getId().equals(NODE.getId()));
             NODES.add(NODE);
-
-            updateNodePlayers();
         }
     }
 
