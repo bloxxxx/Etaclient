@@ -76,8 +76,9 @@ public class Features {
         // X = Disabled while running
         callFeaturesAlwaysOn(InitFeature.class, InitFeature::init);
         callFeaturesAlwaysOn(CommandFeature.class, CommandFeature::initCommands);
-        callFeaturesAlwaysOn(TickedFeature.class, TickedFeature::initTicked);               // X
-        callFeaturesAlwaysOn(HudRenderFeature.class, HudRenderFeature::initRenderHud);      // X
+        callFeaturesAlwaysOn(TickedFeature.class, TickedFeature::initTicked);                    // X
+        callFeaturesAlwaysOn(HudRenderFeature.class, HudRenderFeature::initRenderHud);           // X
+        callFeaturesAlwaysOn(WorldRenderFeature.class, WorldRenderFeature::initWorldRender);     // X
     }
 
     private static void feat(Feature... features) {

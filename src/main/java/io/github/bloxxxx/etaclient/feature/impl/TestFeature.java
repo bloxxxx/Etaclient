@@ -3,24 +3,23 @@ package io.github.bloxxxx.etaclient.feature.impl;
 import com.mojang.brigadier.CommandDispatcher;
 import io.github.bloxxxx.etaclient.feature.builtin.PlayerTracker;
 import io.github.bloxxxx.etaclient.feature.builtin.TeleportHandler;
-import io.github.bloxxxx.etaclient.feature.trait.CommandFeature;
-import io.github.bloxxxx.etaclient.feature.trait.ForceFeature;
-import io.github.bloxxxx.etaclient.feature.trait.HudRenderFeature;
-import io.github.bloxxxx.etaclient.feature.trait.InitFeature;
+import io.github.bloxxxx.etaclient.feature.trait.*;
 import io.github.bloxxxx.etaclient.hypercube.plot.varitem.VarItem;
 import io.github.bloxxxx.etaclient.hypercube.server.HypercubeNode;
 import io.github.bloxxxx.etaclient.hypercube.server.HypercubePlayer;
 import io.github.bloxxxx.etaclient.util.*;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
+import net.fabricmc.fabric.api.client.rendering.v1.world.WorldRenderContext;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.RenderTickCounter;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-public class TestFeature implements InitFeature, CommandFeature, HudRenderFeature, ForceFeature {
+public class TestFeature implements InitFeature, CommandFeature, HudRenderFeature, SimpleWorldRenderFeature, ForceFeature {
 
     @Override
     public void init() {
@@ -164,5 +163,9 @@ public class TestFeature implements InitFeature, CommandFeature, HudRenderFeatur
     @Override
     public String getHudElementId() {
         return "testfeature";
+    }
+
+    @Override
+    public void renderWorldSimple(WorldRenderContext context, MatrixStack matrixStack, Vec3d cameraPos) {
     }
 }

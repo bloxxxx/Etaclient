@@ -5,6 +5,7 @@ import net.kyori.adventure.platform.modcommon.impl.client.MinecraftClientAudienc
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.minecraft.text.Text;
+import org.jetbrains.annotations.Nullable;
 
 public final class MinimsgUtil {
     private MinimsgUtil() {}
@@ -12,17 +13,25 @@ public final class MinimsgUtil {
     private static final MiniMessage mm = MiniMessage.miniMessage();
     private static final MinecraftClientAudiences audiences = MinecraftClientAudiencesImpl.INSTANCE;
 
-    public static Component deserialize(String input) {
-        return mm.deserialize(input);
+    public static @Nullable Component deserialize(String input) {
+        try {
+            return mm.deserialize(input);
+        } catch (Exception ignored) {
+            return null;
+        }
     }
-    public static Text deserializeText(String input) {
+    public static @Nullable Text deserializeText(String input) {
         return audiences.asNative(deserialize(input));
     }
 
-    public static String serialize(Component input) {
-        return mm.serialize(input);
+    public static @Nullable String serialize(Component input) {
+        try {
+            return mm.serialize(input);
+        } catch (Exception ignored) {
+            return null;
+        }
     }
-    public static String serializeText(Text input) {
+    public static @Nullable String serializeText(Text input) {
         return serialize(audiences.asAdventure(input));
     }
 
