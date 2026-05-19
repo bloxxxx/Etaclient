@@ -19,7 +19,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-public class TestFeature implements InitFeature, CommandFeature, HudRenderFeature, SimpleWorldRenderFeature, ForceFeature {
+public class TestFeature implements InitFeature, CommandFeature, GameRenderOverlayFeature, HudRenderFeature, SimpleWorldRenderFeature, ForceFeature {
 
     @Override
     public void init() {
@@ -120,12 +120,25 @@ public class TestFeature implements InitFeature, CommandFeature, HudRenderFeatur
                             hud = false;
                             return 0;
                         })
+                ),
+
+                new SimpleNestedSubCommand("toggleOverlay",
+                        new SimpleSubCommand("enable", context -> {
+                            overlay = true;
+                            return 0;
+                        }),
+
+                        new SimpleSubCommand("disable", context -> {
+                            overlay = false;
+                            return 0;
+                        })
                 )
 
         );
     }
 
     private boolean hud = false;
+    private boolean overlay = false;
     private Vec3d teleportTest = Vec3d.ZERO;
 
     @Override
@@ -167,5 +180,14 @@ public class TestFeature implements InitFeature, CommandFeature, HudRenderFeatur
 
     @Override
     public void renderWorldSimple(WorldRenderContext context, MatrixStack matrixStack, Vec3d cameraPos) {
+    }
+
+    @Override
+    public void renderGameOverlay(RenderTickCounter tickCounter, boolean tick, DrawContext context) {
+        if (!overlay) return;
+
+        context.fill(10, 10, 280, 47, 0xa0101020);
+        context.drawText(McUtil.textRenderer(), "§lGAME OVERLAY", 15, 18, -1, true);
+        context.drawText(McUtil.textRenderer(), "Disable using /etatest toggleOverlay disable", 15, 32, -1, true);
     }
 }

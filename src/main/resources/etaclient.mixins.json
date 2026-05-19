@@ -6,7 +6,8 @@
   "mixins": [
   ],
   "client": [
-    "MClientConnection"
+    "MClientConnection",
+    "MGameRenderer"
   ],
   "injectors": {
     "defaultRequire": 1
