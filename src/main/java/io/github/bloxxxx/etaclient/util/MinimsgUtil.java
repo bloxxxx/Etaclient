@@ -21,7 +21,11 @@ public final class MinimsgUtil {
         }
     }
     public static @Nullable Text deserializeText(String input) {
-        return audiences.asNative(deserialize(input));
+        try {
+            return audiences.asNative(deserialize(input));
+        } catch (Exception ignored) {
+            return null;
+        }
     }
 
     public static @Nullable String serialize(Component input) {
@@ -32,7 +36,11 @@ public final class MinimsgUtil {
         }
     }
     public static @Nullable String serializeText(Text input) {
-        return serialize(audiences.asAdventure(input));
+        try {
+            return serialize(audiences.asAdventure(input));
+        } catch (Exception ignored) {
+            return null;
+        }
     }
 
 
