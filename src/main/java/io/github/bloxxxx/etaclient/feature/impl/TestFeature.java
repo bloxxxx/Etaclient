@@ -7,6 +7,7 @@ import io.github.bloxxxx.etaclient.feature.trait.*;
 import io.github.bloxxxx.etaclient.hypercube.plot.varitem.VarItem;
 import io.github.bloxxxx.etaclient.hypercube.server.HypercubeNode;
 import io.github.bloxxxx.etaclient.hypercube.server.HypercubePlayer;
+import io.github.bloxxxx.etaclient.menu.impl.TestMenu;
 import io.github.bloxxxx.etaclient.util.*;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.fabricmc.fabric.api.client.rendering.v1.world.WorldRenderContext;
@@ -132,7 +133,12 @@ public class TestFeature implements InitFeature, CommandFeature, GameRenderOverl
                             overlay = false;
                             return 0;
                         })
-                )
+                ),
+
+                new SimpleSubCommand("menu", context -> {
+                    McUtil.execute(()-> McUtil.setScreen(new TestMenu(null)));
+                    return 0;
+                })
 
         );
     }
