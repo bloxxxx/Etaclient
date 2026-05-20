@@ -49,4 +49,24 @@ public class HypercubeNode {
         return Objects.equals(id, that.id);
     }
 
+    public boolean is(PresetNode presetNode) {
+        return id.equals(presetNode.id);
+    }
+
+    public enum PresetNode {
+        NODE_1("node_1"),
+        NODE_2("node_2"),
+        NODE_3("node_3"),
+        NODE_4("node_4"),
+        NODE_5("node_5"),
+        NODE_6("node_6"),
+        NODE_7("node_7"),
+        NODE_BETA("node_beta");
+
+        public final String id;
+        PresetNode(String id) {
+            this.id = id;
+        }
+    }
+
 }
