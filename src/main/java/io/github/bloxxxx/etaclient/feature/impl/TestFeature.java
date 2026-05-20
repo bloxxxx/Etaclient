@@ -11,10 +11,18 @@ import io.github.bloxxxx.etaclient.menu.impl.TestMenu;
 import io.github.bloxxxx.etaclient.util.*;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.fabricmc.fabric.api.client.rendering.v1.world.WorldRenderContext;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.render.RenderTickCounter;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.command.CommandRegistryAccess;
+import net.minecraft.item.BlockItem;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.Hand;
+import net.minecraft.util.hit.BlockHitResult;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.NotNull;
 
@@ -73,10 +81,11 @@ public class TestFeature implements InitFeature, CommandFeature, GameRenderOverl
                 }),
 
                 new SimpleSubCommand("teleport", context -> {
-                    if (TeleportHandler.tp(teleportTest)) {
-                        PlayerUtil.sendMinimsg("<green>Teleported successfully");
+                    TeleportHandler.Response res = TeleportHandler.tp(teleportTest);
+                    if (res.successful()) {
+                        PlayerUtil.sendMinimsg("<green>Teleported successfully" + (res.ptp() ? " (Used ptp)" : "") + " [" + res.length() + "]");
                     } else {
-                        PlayerUtil.sendMinimsg("<red>Teleport failed");
+                        PlayerUtil.sendMinimsg("<red>Teleport failed" + (res.ptp() ? " (Tried using ptp)" : "") + " [" + res.length() + "]");
                     }
                     return 0;
                 }),

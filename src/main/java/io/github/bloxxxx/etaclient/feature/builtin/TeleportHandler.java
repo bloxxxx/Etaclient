@@ -25,11 +25,11 @@ public class TeleportHandler implements TickedFeature, ForceFeature {
     private static final double MAX_DIFF = 0.1;
     private static final int SOUND_AWAIT_TIMER = 10;
 
-    public static boolean tp(Vec3d goal) {
+    public static Response tp(Vec3d goal) {
         ClientPlayerEntity player = PlayerUtil.get();
-        if (player == null) return false;
+        if (player == null) return new Response();
         GameMode gameMode = player.getGameMode();
-        if (gameMode == null) return false;
+        if (gameMode == null) return new Response();
 
         Vec3d start = PlayerUtil.getPosition();
         Vec3d difference = goal.subtract(start);
@@ -69,15 +69,16 @@ public class TeleportHandler implements TickedFeature, ForceFeature {
             if (!foundSolution) break;
             if (foundGoal) break;
         }
+        int tpLength = tpPositions.size();
 
-        if (!foundSolution || tpPositions.size() > MAX_TP_LENGTH || (isBlock(goal) && gameMode != GameMode.SPECTATOR)) {
+        if (!foundSolution || tpLength > MAX_TP_LENGTH || (isBlock(goal) && gameMode != GameMode.SPECTATOR)) {
             if (PlayerTracker.MODE.isEditing()) {
                 PlayerUtil.sendCommand("plot teleport " + goal.getX() + " " + goal.getY() + " " + goal.getZ());
                 awaitingSounds++;
                 awaitingSoundsTimer = SOUND_AWAIT_TIMER;
-                return true;
+                return new Response(true, true, tpLength);
             }
-            return false;
+            return new Response(false, true, tpLength);
         }
 
         for (Vec3d pos : tpPositions) {
@@ -86,10 +87,10 @@ public class TeleportHandler implements TickedFeature, ForceFeature {
         PlayerUtil.teleportInstant(goal);
         PlayerUtil.setVelocity(Vec3d.ZERO);
 
-        return true;
+        return new Response(true, false, tpLength);
 
     }
-    public static boolean tp(BlockPos goal) {
+    public static Response tp(BlockPos goal) {
         return tp(goal.toCenterPos());
     }
 
@@ -127,5 +128,11 @@ public class TeleportHandler implements TickedFeature, ForceFeature {
     private static void decrementSounds() {
         awaitingSoundsTimer = SOUND_AWAIT_TIMER;
         awaitingSounds--;
+    }
+
+    public record Response(boolean successful, boolean ptp, int length) {
+        public Response() {
+            this(false, false, 0);
+        }
     }
 }
