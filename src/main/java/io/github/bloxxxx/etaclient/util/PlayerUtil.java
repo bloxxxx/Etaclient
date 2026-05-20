@@ -21,6 +21,7 @@ public final class PlayerUtil {
     }
 
     public static void sendMessage(Text message, boolean overlay) {
+        if (message == null) return;
         getOp().ifPresent((player) -> player.sendMessage(message, overlay));
     }
     public static void sendMessage(Text message) {
