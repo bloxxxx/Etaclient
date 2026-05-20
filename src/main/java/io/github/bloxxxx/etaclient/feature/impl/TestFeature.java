@@ -147,6 +147,33 @@ public class TestFeature implements InitFeature, CommandFeature, GameRenderOverl
                 new SimpleSubCommand("menu", context -> {
                     McUtil.execute(()-> McUtil.setScreen(new TestMenu(null)));
                     return 0;
+                }),
+
+                new SimpleSubCommand("placementContext", context -> {
+                    ItemStack stack = PlayerUtil.getHandStack();
+                    Item item = stack.getItem();
+                    if (!(item instanceof BlockItem blockItem)) {
+                        PlayerUtil.sendMinimsg("<red>Not holding a block");
+                        return 0;
+                    }
+
+                    BlockHitResult hitResult = new BlockHitResult(
+                            PlayerUtil.getPosition(),
+                            Direction.DOWN,
+                            PlayerUtil.getBlockPosition(),
+                            false
+                    );
+                    ItemPlacementContext placementContext = new ItemPlacementContext(
+                            PlayerUtil.get(), Hand.MAIN_HAND, stack, hitResult
+                    );
+                    BlockState state = blockItem.getBlock().getPlacementState(placementContext);
+                    if (state == null) {
+                        PlayerUtil.sendMinimsg("<red>State is null");
+                        return 0;
+                    }
+                    PlayerUtil.sendMinimsg("<green>" + state);
+
+                    return 0;
                 })
 
         );

@@ -4,6 +4,7 @@ import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.text.Text;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
 import java.util.Optional;
@@ -36,6 +37,11 @@ public final class PlayerUtil {
         ClientPlayerEntity player = get();
         if (player == null) return Vec3d.ZERO;
         return player.getEntityPos();
+    }
+    public static BlockPos getBlockPosition() {
+        ClientPlayerEntity player = get();
+        if (player == null) return new BlockPos(0, 0, 0);
+        return player.getBlockPos();
     }
 
     public static void sendCommand(String command) {
