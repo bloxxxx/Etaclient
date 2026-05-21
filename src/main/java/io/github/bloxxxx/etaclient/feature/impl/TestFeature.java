@@ -20,6 +20,7 @@ import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.Direction;
@@ -91,10 +92,13 @@ public class TestFeature implements InitFeature, CommandFeature, GameRenderOverl
                 }),
 
                 new SimpleSubCommand("pbv", context -> {
-                    PlayerUtil.sendMinimsg("<green>" + Objects.requireNonNullElse(
-                            PBVUtil.get(PlayerUtil.getHandStack()),
-                            "<red>No PBV Found"
-                    ));
+                    NbtCompound pbv = PBVUtil.get(PlayerUtil.getHandStack());
+                    if (pbv == null) {
+                        PlayerUtil.sendMinimsg("<red>No PBV Found");
+                        return 0;
+                    }
+
+                    PlayerUtil.sendMinimsg("<green>" + MinimsgUtil.removeVanillaCode(pbv.toString()));
                     return 0;
                 }),
 

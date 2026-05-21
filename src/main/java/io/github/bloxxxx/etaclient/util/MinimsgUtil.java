@@ -15,7 +15,7 @@ public final class MinimsgUtil {
 
     public static @Nullable Component deserialize(String input) {
         try {
-            return mm.deserialize(input);
+            return mm.deserialize(convertVanillaCodeToMinimsg(input));
         } catch (Exception ignored) {
             return null;
         }
@@ -41,6 +41,38 @@ public final class MinimsgUtil {
         } catch (Exception ignored) {
             return null;
         }
+    }
+
+    public static String convertVanillaCodeToMinimsg(String input) {
+        return input
+                .replaceAll("§0", "<black>")
+                .replaceAll("§1", "<dark_blue>")
+                .replaceAll("§2", "<dark_green>")
+                .replaceAll("§3", "<dark_aqua>")
+                .replaceAll("§4", "<dark_red>")
+                .replaceAll("§5", "<dark_purple>")
+                .replaceAll("§6", "<gold>")
+                .replaceAll("§7", "<gray>")
+                .replaceAll("§8", "<dark_gray>")
+                .replaceAll("§9", "<blue>")
+                .replaceAll("§a", "<green>")
+                .replaceAll("§b", "<aqua>")
+                .replaceAll("§c", "<red>")
+                .replaceAll("§d", "<light_purple>")
+                .replaceAll("§e", "<yellow>")
+                .replaceAll("§f", "<white>")
+
+                .replaceAll("§k", "<obfuscated>")
+                .replaceAll("§l", "<bold>")
+                .replaceAll("§m", "<strikethrough>")
+                .replaceAll("§n", "<underlined>")
+                .replaceAll("§o", "<italic>")
+                .replaceAll("§r", "<reset>")
+                .replaceAll("§.", "");
+    }
+
+    public static String removeVanillaCode(String input) {
+        return input.replaceAll("§.", "");
     }
 
 
