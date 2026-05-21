@@ -43,14 +43,14 @@ public abstract class MenuWidget extends ClickableWidget {
 
         int xDist = x2 - x1;
         int yDist = y2 - y1;
-        int xOffset = switch (alignment) {
+        float xOffset = switch (alignment) {
             case LEFT -> 5;
-            case RIGHT -> xDist - fontWidth(message) - 5;
-            case CENTER -> xDist / 2 - (fontWidth(message) / 2);
+            case RIGHT -> xDist - fontWidth(text) - 5;
+            case CENTER -> (float) (xDist / 2 - (fontWidth(text) / 2));
         };
 
         context.getMatrices().translate(xOffset, (float) yDist / 2 - halfFontHeight());
-        context.drawText(textRenderer(), message, x1, y1, color, true);
+        context.drawText(textRenderer(), text, x1, y1, color, true);
         context.getMatrices().popMatrix();
     }
 
@@ -58,13 +58,21 @@ public abstract class MenuWidget extends ClickableWidget {
     public void playDownSound(SoundManager soundManager) {
     }
 
+    protected boolean mouseDown = false;
+    // Only becomes true when the click started inside the widget, although it can end anywhere.
+    protected boolean mouseDownInside = false;
+
     @Override
     public void onClick(Click click, boolean doubled) {
+        mouseDown = true;
+        if (isMouseOver(click.x(), click.y())) mouseDownInside = true;
         onMouseClick(click, true, doubled);
     }
 
     @Override
     public void onRelease(Click click) {
+        mouseDown = false;
+        mouseDownInside = false;
         onMouseClick(click, false, false);
     }
 

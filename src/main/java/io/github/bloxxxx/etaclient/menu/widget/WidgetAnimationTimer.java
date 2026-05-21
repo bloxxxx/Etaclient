@@ -2,19 +2,26 @@ package io.github.bloxxxx.etaclient.menu.widget;
 
 public class WidgetAnimationTimer {
 
-    public float value;
+    private float value;
     private float target;
     private float time;
     private float speed;
     private float start;
     private final EasingType easingType;
-    public WidgetAnimationTimer(EasingType easingType) {
-        value = 0;
+    public WidgetAnimationTimer(EasingType easingType, float value) {
+        this.value = value;
         target = value;
         start = value;
         time = 0;
         speed = 1;
         this.easingType = easingType;
+    }
+
+    public WidgetAnimationTimer(EasingType easingType) {
+        this(easingType, 0);
+    }
+    public WidgetAnimationTimer(EasingType easingType, boolean value) {
+        this(easingType, value ? 1 : 0);
     }
 
     public void update(float dt) {
@@ -72,6 +79,19 @@ public class WidgetAnimationTimer {
 
     public void setTarget(boolean target, float speed) {
         setTarget(target ? 1 : 0, speed);
+    }
+
+    public void setValue(float value) {
+        this.value = value;
+        this.target = value;
+        this.speed = 0;
+    }
+    public void setValue(boolean value) {
+        setValue(value ? 1 : 0);
+    }
+
+    public float getValue() {
+        return value;
     }
 
     public float targetDist() {

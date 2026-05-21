@@ -11,13 +11,21 @@ public class ToggleButtonWidget extends MenuWidget {
         super(x, y, width, height);
         this.defaultValue = defaultValue;
         value = defaultValue;
-        animation = new WidgetAnimationTimer(WidgetAnimationTimer.EasingType.CUBIC_OUT);
+        animation = new WidgetAnimationTimer(WidgetAnimationTimer.EasingType.CUBIC_OUT, value);
     }
 
-    private boolean defaultValue;
-    public boolean value;
+    public final boolean defaultValue;
+    private boolean value;
 
     private WidgetAnimationTimer animation;
+
+    public void setValue(boolean value) {
+        this.value = value;
+        animation.setValue(value);
+    }
+    public boolean getValue() {
+        return value;
+    }
 
     @Override
     public void onMouseClick(Click click, boolean down, boolean doubled) {
@@ -39,13 +47,13 @@ public class ToggleButtonWidget extends MenuWidget {
 
         context.fill(getX(), getY(), getRight(), getBottom(), outline);
         context.fill(getX() + margin, getY() + margin, getRight() - margin, getBottom() - margin, rightFill);
-        context.fill(getX() + margin, getY() + margin, (int) (getX() + ((width - margin * 2) * animation.value) + margin), getBottom() - margin, leftFill);
+        context.fill(getX() + margin, getY() + margin, (int) (getX() + ((width - margin * 2) * animation.getValue()) + margin), getBottom() - margin, leftFill);
 
         context.getMatrices().pushMatrix();
         int size = height;
-        context.getMatrices().translate((width - size) * animation.value, 0);
+        context.getMatrices().translate((width - size) * animation.getValue(), 0);
         context.fill(getX() + margin, getY() + margin, getX() + size - margin, getY() + size - margin, fill);
-        if (value == defaultValue) context.fill(getX() + margin, getY() + size + margin - 5, getX() + size - margin, getY() + size - margin, 0xa0ffffff);
+        if (value == defaultValue) context.fill(getX() + margin, getY() + size - margin - 2, getX() + size - margin, getY() + size - margin, 0xa0ffffff);
         context.getMatrices().popMatrix();
     }
 
