@@ -1,9 +1,7 @@
 package io.github.bloxxxx.etaclient.menu.impl;
 
 import io.github.bloxxxx.etaclient.menu.Menu;
-import io.github.bloxxxx.etaclient.menu.widget.IntSliderWidget;
-import io.github.bloxxxx.etaclient.menu.widget.MenuButtonWidget;
-import io.github.bloxxxx.etaclient.menu.widget.ToggleButtonWidget;
+import io.github.bloxxxx.etaclient.menu.widget.*;
 import io.github.bloxxxx.etaclient.menu.widget.container.ScrollMenuContainerWidget;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
@@ -17,10 +15,14 @@ public class TestMenu extends Menu {
 
     @Override
     protected void doInit() {
+
         ScrollMenuContainerWidget containerWidget = new ScrollMenuContainerWidget(
                 20, 20,
                 300, 300
         ).setGap(5);
+        containerWidget.addChild(new LabelMenuWidget(
+                350, 20, 100, 50, Text.literal("Hello"), 0xffa0a0ff, TextAlignment.LEFT, 2
+        ));
         containerWidget.addChild(new ToggleButtonWidget(
                 0, 0,
                 50, 20,

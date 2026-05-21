@@ -38,20 +38,39 @@ public abstract class MenuWidget extends ClickableWidget {
     protected int halfFontHeight() {
         return fontHeight() / 2;
     }
-    protected void drawText(DrawContext context, Text text, int color, TextAlignment alignment, int x1, int y1, int x2, int y2) {
+    protected void drawText(DrawContext context, Text text, int color, TextAlignment alignment, int x1, int y1, int x2, int y2, float scale, float xShift) {
         context.getMatrices().pushMatrix();
+
+        int fontWidth = fontWidth(text);
 
         int xDist = x2 - x1;
         int yDist = y2 - y1;
         float xOffset = switch (alignment) {
-            case LEFT -> 5;
-            case RIGHT -> xDist - fontWidth(text) - 5;
-            case CENTER -> (float) (xDist / 2 - (fontWidth(text) / 2));
+            case LEFT -> xShift;
+            case RIGHT -> xDist - fontWidth - xShift;
+            case CENTER -> (float) (xDist / 2 - (fontWidth / 2));
         };
 
-        context.getMatrices().translate(xOffset, (float) yDist / 2 - halfFontHeight());
-        context.drawText(textRenderer(), text, x1, y1, color, true);
+        float yOffset = (float) yDist / 2 - halfFontHeight();
+        context.getMatrices().translate(x1 + xOffset, y1 + yOffset);
+
+        float pivotX = switch (alignment) {
+            case LEFT -> 0;
+            case CENTER -> fontWidth / 2f;
+            case RIGHT -> fontWidth;
+        };
+
+        float pivotY = halfFontHeight();
+
+        context.getMatrices().scaleAround(scale, pivotX, pivotY);
+        context.drawText(textRenderer(), text, 0, 0, color, true);
         context.getMatrices().popMatrix();
+    }
+    protected void drawText(DrawContext context, Text text, int color, TextAlignment alignment, int x1, int y1, int x2, int y2, float scale) {
+        drawText(context, text, color, alignment, x1, y1, x2, y2, scale, 0);
+    }
+    protected void drawText(DrawContext context, Text text, int color, TextAlignment alignment, int x1, int y1, int x2, int y2) {
+        drawText(context, text, color, alignment, x1, y1, x2, y2, 1);
     }
 
     @Override

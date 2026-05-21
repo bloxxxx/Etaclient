@@ -52,7 +52,7 @@ public class MenuButtonWidget extends MenuWidget {
     @Override
     protected void renderWidget(DrawContext context, int mouseX, int mouseY, float deltaTicks) {
         if (background != null) background.render(context, mouseX, mouseY, deltaTicks, getX(), getY(), getRight(), getBottom());
-        drawText(context, message, textColor, textAlignment, getX(), getY(), getRight(), getBottom());
+        drawText(context, message, textColor, textAlignment, getX(), getY(), getRight(), getBottom(), 1, 5);
     }
 
     @Override
