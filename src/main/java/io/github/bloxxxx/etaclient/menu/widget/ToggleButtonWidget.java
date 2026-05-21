@@ -45,6 +45,7 @@ public class ToggleButtonWidget extends MenuWidget {
         int size = height;
         context.getMatrices().translate((width - size) * animation.value, 0);
         context.fill(getX() + margin, getY() + margin, getX() + size - margin, getY() + size - margin, fill);
+        if (value == defaultValue) context.fill(getX() + margin, getY() + size + margin - 5, getX() + size - margin, getY() + size - margin, 0xa0ffffff);
         context.getMatrices().popMatrix();
     }
 
