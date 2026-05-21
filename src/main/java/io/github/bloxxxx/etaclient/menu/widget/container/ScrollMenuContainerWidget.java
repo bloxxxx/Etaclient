@@ -1,7 +1,6 @@
 package io.github.bloxxxx.etaclient.menu.widget.container;
 
 import io.github.bloxxxx.etaclient.menu.widget.MenuWidget;
-import io.github.bloxxxx.etaclient.util.LogUtil;
 import net.minecraft.client.gui.DrawContext;
 
 import java.util.List;
