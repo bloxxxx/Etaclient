@@ -3,6 +3,7 @@ package io.github.bloxxxx.etaclient.util;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.sound.SoundManager;
 import net.minecraft.client.world.ClientWorld;
 
 public class McUtil {
@@ -22,5 +23,9 @@ public class McUtil {
 
     public static void setScreen(Screen screen) {
         MC.setScreen(screen);
+    }
+
+    public static SoundManager soundManager() {
+        return MC.getSoundManager();
     }
 }

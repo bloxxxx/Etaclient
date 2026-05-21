@@ -1,6 +1,7 @@
 package io.github.bloxxxx.etaclient.util;
 
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.client.sound.SoundInstance;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.text.Text;
@@ -83,5 +84,9 @@ public final class PlayerUtil {
         ClientPlayerEntity player = get();
         if (player == null) return ItemStack.EMPTY;
         return player.getMainHandStack();
+    }
+
+    public static void playSound(SoundInstance instance) {
+        McUtil.soundManager().play(instance);
     }
 }

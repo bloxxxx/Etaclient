@@ -2,10 +2,10 @@ package io.github.bloxxxx.etaclient.menu.widget;
 
 import io.github.bloxxxx.etaclient.menu.widget.background.HoverOutlineMenuWidgetBackground;
 import io.github.bloxxxx.etaclient.menu.widget.background.MenuWidgetBackground;
+import io.github.bloxxxx.etaclient.util.PlayerUtil;
 import net.minecraft.client.gui.Click;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.sound.PositionedSoundInstance;
-import net.minecraft.client.sound.SoundManager;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.Nullable;
@@ -56,13 +56,10 @@ public class MenuButtonWidget extends MenuWidget {
     }
 
     @Override
-    public void playDownSound(SoundManager soundManager) {
-        soundManager.play(PositionedSoundInstance.ui(SoundEvents.BLOCK_BAMBOO_WOOD_BUTTON_CLICK_ON, 1.4F, 1.5F));
-    }
-
-    @Override
     public void onMouseClick(Click click, boolean down, boolean doubled) {
-        if (!down && clickAction != null) clickAction.onClick(this, click, down, doubled);
+        if (!down) return;
+        PlayerUtil.playSound(PositionedSoundInstance.ui(SoundEvents.BLOCK_BAMBOO_WOOD_BUTTON_CLICK_ON, 1.5F, 1F));
+        if (clickAction != null) clickAction.onClick(this, click, down, doubled);
     }
 
     public interface ClickAction {

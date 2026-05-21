@@ -59,13 +59,19 @@ public abstract class MenuWidget extends ClickableWidget {
     }
 
     protected boolean mouseDown = false;
+    protected boolean mouseWasDown = false;
     // Only becomes true when the click started inside the widget, although it can end anywhere.
     protected boolean mouseDownInside = false;
+    protected boolean mouseWasDownInside = false;
 
     @Override
     public void onClick(Click click, boolean doubled) {
         mouseDown = true;
-        if (isMouseOver(click.x(), click.y())) mouseDownInside = true;
+        mouseWasDown = true;
+        if (isMouseOver(click.x(), click.y())) {
+            mouseDownInside = true;
+            mouseWasDownInside = true;
+        }
         onMouseClick(click, true, doubled);
     }
 
@@ -74,6 +80,8 @@ public abstract class MenuWidget extends ClickableWidget {
         mouseDown = false;
         mouseDownInside = false;
         onMouseClick(click, false, false);
+        mouseWasDown = false;
+        mouseWasDownInside = false;
     }
 
     public abstract void onMouseClick(Click click, boolean down, boolean doubled);

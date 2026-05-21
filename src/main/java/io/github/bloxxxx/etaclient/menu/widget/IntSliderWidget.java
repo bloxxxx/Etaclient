@@ -1,9 +1,9 @@
 package io.github.bloxxxx.etaclient.menu.widget;
 
-import io.github.bloxxxx.etaclient.util.LogUtil;
 import io.github.bloxxxx.etaclient.util.PlayerUtil;
 import net.minecraft.client.gui.Click;
 import net.minecraft.client.gui.DrawContext;
+import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 
@@ -35,7 +35,12 @@ public class IntSliderWidget extends MenuWidget {
     private final int margin = 2;
 
     @Override
-    public void onMouseClick(Click click, boolean down, boolean doubled) {}
+    public void onMouseClick(Click click, boolean down, boolean doubled) {
+        if (mouseWasDownInside) {
+            if (down) PlayerUtil.playSound(PositionedSoundInstance.ui(SoundEvents.BLOCK_AMETHYST_BLOCK_RESONATE, 1.5F, 1));
+            if (!down) PlayerUtil.playSound(PositionedSoundInstance.ui(SoundEvents.BLOCK_AMETHYST_BLOCK_RESONATE, 0.5F, 1));
+        }
+    }
 
     private void updateMouseMove(float mouseX, float mouseY) {
         if (!mouseDownInside) return;
@@ -43,7 +48,7 @@ public class IntSliderWidget extends MenuWidget {
         clickFraction = Math.clamp(clickFraction, 0, 1);
         int val = Math.round(min + (max - min) * clickFraction);
         if (val != value) {
-            PlayerUtil.get().playSound(SoundEvents.BLOCK_METAL_HIT, 1, 1.5F);
+            PlayerUtil.playSound(PositionedSoundInstance.ui(SoundEvents.BLOCK_STONE_BREAK, 0.5F, 0.5F));
             value = val;
             animation.setTarget(getFraction(), 1);
         }

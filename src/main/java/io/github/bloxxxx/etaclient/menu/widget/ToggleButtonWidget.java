@@ -1,9 +1,9 @@
 package io.github.bloxxxx.etaclient.menu.widget;
 
+import io.github.bloxxxx.etaclient.util.PlayerUtil;
 import net.minecraft.client.gui.Click;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.sound.PositionedSoundInstance;
-import net.minecraft.client.sound.SoundManager;
 import net.minecraft.sound.SoundEvents;
 
 public class ToggleButtonWidget extends MenuWidget {
@@ -32,6 +32,12 @@ public class ToggleButtonWidget extends MenuWidget {
         if (!down) return;
         value = !value;
         animation.setTarget(value, 0.5F);
+
+        if (value) {
+            PlayerUtil.playSound(PositionedSoundInstance.ui(SoundEvents.BLOCK_BARREL_OPEN, 1.5F, 0.5F));
+        } else {
+            PlayerUtil.playSound(PositionedSoundInstance.ui(SoundEvents.BLOCK_BARREL_CLOSE, 1.5F, 0.5F));
+        }
     }
 
     @Override
@@ -55,14 +61,5 @@ public class ToggleButtonWidget extends MenuWidget {
         context.fill(getX() + margin, getY() + margin, getX() + size - margin, getY() + size - margin, fill);
         if (value == defaultValue) context.fill(getX() + margin, getY() + size - margin - 2, getX() + size - margin, getY() + size - margin, 0xa0ffffff);
         context.getMatrices().popMatrix();
-    }
-
-    @Override
-    public void playDownSound(SoundManager soundManager) {
-        if (value) {
-            soundManager.play(PositionedSoundInstance.ui(SoundEvents.BLOCK_IRON_TRAPDOOR_CLOSE, 1.5F, 0.5F));
-        } else {
-            soundManager.play(PositionedSoundInstance.ui(SoundEvents.BLOCK_IRON_TRAPDOOR_OPEN, 1.5F, 0.5F));
-        }
     }
 }
