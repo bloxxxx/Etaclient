@@ -31,4 +31,9 @@ public abstract class Menu extends Screen {
     public void close() {
         McUtil.setScreen(parent);
     }
+
+    @Override
+    public boolean shouldPause() {
+        return false;
+    }
 }
